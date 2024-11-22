@@ -1,0 +1,1 @@
+Since I wanted to learn something new, decided to use Mantine UI instead of Material UI
