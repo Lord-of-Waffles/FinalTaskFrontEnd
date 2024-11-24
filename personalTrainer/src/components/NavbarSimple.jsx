@@ -9,10 +9,11 @@ import {
 } from '@tabler/icons-react';
 import classes from './NavbarSimple.module.css';
 
+
 const data = [
     { link: '/', label: 'Home', icon: IconHomeFilled },
     { link: '/customers', label: 'Customers', icon: IconUserFilled },
-    { link: '/training-sessions', label: 'Training Sessions', icon: IconBarbellFilled },
+    { link: '/training', label: 'Training Sessions', icon: IconBarbellFilled },
     { link: '/calendar', label: 'Calendar', icon: IconCalendarFilled },
     { link: '/statistics', label: 'Statistics', icon: IconChartDotsFilled },
 ];

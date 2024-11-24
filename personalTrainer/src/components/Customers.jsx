@@ -1,9 +1,10 @@
 import NavbarSimple from './NavbarSimple'
 import HeaderSimple from './HeaderSimple';
-import CustomersTable from './CustomersTable'
+import CustomerTable from './CustomerTable'
+import Footer from './Footer'
 import '@mantine/core/styles.css';
 
-import { createTheme, MantineProvider, Group } from '@mantine/core';
+import { createTheme, MantineProvider, Group, Container } from '@mantine/core';
 
 const theme = createTheme({
     /** Put your mantine theme override here */
@@ -17,8 +18,11 @@ function App() {
                 <HeaderSimple />
                 <Group>
                     <NavbarSimple />
-                    <CustomersTable />
+                    <Container size={'s'}>
+                        <CustomerTable />
+                    </Container>
                 </Group>
+                <Footer />
             </MantineProvider>
         </>
     )
