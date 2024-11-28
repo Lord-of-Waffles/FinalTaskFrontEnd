@@ -19,7 +19,7 @@ export function deleteTraining(url) {
 }
 
 export function saveTraining(newTraining) {
-    return fetch(import.meta.env.VITE_API_URL_TRAININGS, {
+    return fetch("https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/trainings", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(newTraining),

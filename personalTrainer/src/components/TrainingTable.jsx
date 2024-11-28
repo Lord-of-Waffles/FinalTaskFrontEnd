@@ -13,16 +13,30 @@ function TrainingTable() {
 
     const [colDefs, setColDefs] = useState([
         {
-            cellRenderer: params => <Button color="red" size="small" onClick={() => handleDelete(params.data._links.self.href)}>Delete</Button>,
+            cellRenderer: params => {
+                const trainingId = params.data?.id;
+                if (!trainingId) {
+                    return null; // If no ID, render nothing
+                }
+                return (
+                    <Button
+                        color="red"
+                        size="small"
+                        onClick={() => handleDelete(trainingId)}
+                    >
+                        Delete
+                    </Button>
+                );
+            },
             width: 120,
             sortable: false,
         },
-        { headerName: "Date", field: "date", filter: 'true', sortable: 'true', floatingFilter: 'true' },
-        { headerName: "Duration (in minutes)", field: "duration", filter: 'true', sortable: 'true', floatingFilter: 'true', width: 250 },
-        { headerName: "Activity", field: "activity", filter: 'true', sortable: 'true', floatingFilter: 'true' },
-        { headerName: "Customer", field: "customer", filter: 'true', sortable: 'true', floatingFilter: 'true' },
-
+        { headerName: "Date", field: "date", filter: true, sortable: true, floatingFilter: true },
+        { headerName: "Duration (in minutes)", field: "duration", filter: true, sortable: true, floatingFilter: true, width: 250 },
+        { headerName: "Activity", field: "activity", filter: true, sortable: true, floatingFilter: true },
+        { headerName: "Customer", field: "customer", filter: true, sortable: true, floatingFilter: true },
     ]);
+
 
     const myTheme = themeQuartz.withParams({
         accentColor: "#DD2C00",
@@ -53,29 +67,34 @@ function TrainingTable() {
                 return response.json();
             })
             .then((data) => {
-                // Transform the data to match the column fields
                 const formattedData = data.map((training) => ({
-                    id: training.id,
-                    date: dayjs(training.date).format("YYYY-MM-DD HH:mm"), // Format date
+                    id: training.id, // Include ID for delete functionality
+                    date: dayjs(training.date).format("YYYY-MM-DD HH:mm"),
                     duration: training.duration,
                     activity: training.activity,
-                    customer: `${training.customer.firstname} ${training.customer.lastname}`, // Combine customer names
+                    customer: `${training.customer.firstname} ${training.customer.lastname}`,
                 }));
-                setRowData(formattedData); // Set formatted data to state
+                setRowData(formattedData);
             })
             .catch((err) => console.error(err));
     };
 
-    const handleDelete = (url) => {
-        if (window.confirm("Are you sure?")) {
-            deleteTraining(url)
-                .then(() => {
-                    handleFetch();
-                    setOpen(true);
+
+    const handleDelete = (id) => {
+        if (window.confirm("Are you sure you want to delete this training?")) {
+            fetch(`https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/trainings/${id}`, {
+                method: "DELETE",
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to delete training: ${response.statusText}`);
+                    }
+                    handleFetch(); // Refresh data after deletion
                 })
-                .catch(err => console.error(err))
+                .catch(err => console.error(err));
         }
-    }
+    };
+
 
 
     return (

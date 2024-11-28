@@ -2,6 +2,8 @@ import { useState } from "react";
 import { saveTraining } from "../trainingapi";
 import { Modal, TextInput, Fieldset, Button, Tooltip, ActionIcon } from '@mantine/core';
 import { IconSquareRoundedPlusFilled } from '@tabler/icons-react';
+import { DatePickerInput } from '@mantine/dates';
+import dayjs from 'dayjs';
 
 export default function AddTraining(props) {
     const [open, setOpen] = useState(false);
@@ -24,8 +26,18 @@ export default function AddTraining(props) {
         setTraining({ ...training, [event.target.name]: event.target.value });
     }
 
+    const handleDateChange = (date) => {
+        // Format the date to ISO-8601 for the API
+        setTraining({ ...training, date: dayjs(date).toISOString() });
+    };
+
     const handleSubmitTraining = () => {
-        saveTraining(training)
+        // Ensure customer is converted to the required URL format
+        const formattedTraining = {
+            ...training,
+            customer: `https://myserver.personaltrainer.api/api/customers/${training.customer}`
+        };
+        saveTraining(formattedTraining)
             .then(() => {
                 props.handleFetch();
                 handleClose();
@@ -37,11 +49,11 @@ export default function AddTraining(props) {
         <>
             <Modal opened={open} closeOnClickOutside={handleClose}>
                 <Fieldset>
-                    <TextInput
+                    <DatePickerInput
                         label="Date"
                         name="date"
                         value={training.date}
-                        onChange={handleChange}
+                        onChange={handleDateChange}
                     />
                     <TextInput
                         label="Activity"
