@@ -65,11 +65,13 @@ function CustomerTable() {
     const colDefs = [
         {
             cellRenderer: params => <EditCustomer handleFetch={handleFetch} data={params.data} />,
-            width: 80
+            width: 80,
+            sortable: false,
         },
         {
             cellRenderer: params => <Button color="red" size="small" onClick={() => handleDelete(params.data._links.self.href)}>Delete</Button>,
-            width: 120
+            width: 120,
+            sortable: false,
         },
         { headerName: "First Name", field: "firstname", filter: true, sortable: true, floatingFilter: true },
         { headerName: "Last Name", field: "lastname", filter: true, sortable: true, floatingFilter: true },

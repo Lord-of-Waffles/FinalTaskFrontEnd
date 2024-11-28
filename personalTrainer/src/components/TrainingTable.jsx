@@ -1,51 +1,21 @@
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 import { useState, useEffect } from 'react'; // React hook for managing state
 import { themeQuartz } from '@ag-grid-community/theming';
-import { IconTrashX, IconEdit } from '@tabler/icons-react';
 import dayjs from 'dayjs'; // Date formatting library
+import { Button } from '@mantine/core';
+import { deleteTraining, } from '../trainingapi'; // Fetch API for trainings
+import AddTraining from './AddTraining';
+
+
 function TrainingTable() {
     const [rowData, setRowData] = useState([]); // State variable to store the data from the API
 
-    const handleDelete = (customerId) => {
-        console.log(`Delete customer with ID: ${customerId}`);
-        // Add logic to delete customer here (API call, etc.)
-    };
-
-    const handleEdit = (customerId) => {
-        console.log(`Edit customer with ID: ${customerId}`);
-        // Add logic to edit customer here (e.g., navigate to an edit form)
-    };
 
     const [colDefs, setColDefs] = useState([
         {
-            headerName: "",
-            field: "edit",
-            cellRenderer: (params) => (
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <IconEdit
-                        style={{ cursor: 'pointer', color: '#00C853' }}
-                        onClick={() => handleEdit(params.data.id)}
-                    />
-                </div>
-            ),
-            width: 60, // Adjust column width as needed
-            filter: false, // Disable filtering for this column
-            sortable: false, // Disable sorting for this column
-        },
-        {
-            headerName: "",
-            field: "delete",
-            cellRenderer: (params) => (
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <IconTrashX
-                        style={{ cursor: 'pointer', color: '#FF1744' }}
-                        onClick={() => handleDelete(params.data.id)}
-                    />
-                </div>
-            ),
-            width: 60, // Adjust column width as needed
-            filter: false, // Disable filtering for this column
-            sortable: false, // Disable sorting for this column
+            cellRenderer: params => <Button color="red" size="small" onClick={() => handleDelete(params.data._links.self.href)}>Delete</Button>,
+            width: 120,
+            sortable: false,
         },
         { headerName: "Date", field: "date", filter: 'true', sortable: 'true', floatingFilter: 'true' },
         { headerName: "Duration (in minutes)", field: "duration", filter: 'true', sortable: 'true', floatingFilter: 'true', width: 250 },
@@ -96,9 +66,21 @@ function TrainingTable() {
             .catch((err) => console.error(err));
     };
 
+    const handleDelete = (url) => {
+        if (window.confirm("Are you sure?")) {
+            deleteTraining(url)
+                .then(() => {
+                    handleFetch();
+                    setOpen(true);
+                })
+                .catch(err => console.error(err))
+        }
+    }
+
 
     return (
         <>
+            <AddTraining handleFetch={handleFetch} />
             <div style={{ height: 600, width: 1000 }}> {/* Container for the Data Grid */}
                 <AgGridReact
                     rowData={rowData} // Data to be displayed in the Data Grid
