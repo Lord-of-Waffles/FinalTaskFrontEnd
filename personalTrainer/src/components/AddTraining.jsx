@@ -47,7 +47,7 @@ export default function AddTraining(props) {
 
     return (
         <>
-            <Modal opened={open} closeOnClickOutside={handleClose}>
+            <Modal opened={open} closeOnClickOutside={handleClose} centered transitionProps={{ transition: 'fade-up' }}>
                 <Fieldset>
                     <DatePickerInput
                         label="Date"

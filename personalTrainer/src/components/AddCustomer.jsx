@@ -40,7 +40,8 @@ export default function AddCustomer(props) {
 
     return (
         <>
-            <Modal opened={open} closeOnClickOutside={handleClose}>
+            <Modal opened={open} closeOnClickOutside={handleClose} centered transitionProps={{ transition: 'fade-up' }}
+            >
                 <Fieldset>
                     <TextInput
                         label="First Name"
