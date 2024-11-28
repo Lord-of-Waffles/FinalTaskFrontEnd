@@ -19,7 +19,7 @@ export function deleteCustomer(url) {
 }
 
 export function saveCustomer(newCustomer) {
-    return fetch(import.meta.env.VITE_API_URL, {
+    return fetch("https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/customers", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(newCustomer)

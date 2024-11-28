@@ -4,7 +4,7 @@ import CustomerTable from './CustomerTable'
 import Footer from './Footer'
 import '@mantine/core/styles.css';
 
-import { createTheme, MantineProvider, Group, Container } from '@mantine/core';
+import { createTheme, MantineProvider, Group, Container, } from '@mantine/core';
 
 const theme = createTheme({
     /** Put your mantine theme override here */

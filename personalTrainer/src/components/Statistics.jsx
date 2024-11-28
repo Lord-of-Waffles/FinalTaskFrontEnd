@@ -1,4 +1,6 @@
 import NavbarSimple from './NavbarSimple'
+import HeaderSimple from './HeaderSimple';
+import Footer from './Footer'
 
 import '@mantine/core/styles.css';
 
@@ -13,7 +15,11 @@ function App() {
     return (
         <>
             <MantineProvider theme={theme}>
+                <HeaderSimple />
+
                 <NavbarSimple />
+                <Footer />
+
             </MantineProvider>
         </>
     )
