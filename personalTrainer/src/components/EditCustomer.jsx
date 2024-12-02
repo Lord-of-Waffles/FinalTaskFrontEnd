@@ -2,14 +2,14 @@ import { updateCustomer } from "../customerapi";
 import { useState } from 'react';
 import { Fieldset, TextInput, Button, Modal, Tooltip, ActionIcon } from '@mantine/core';
 import { IconEdit } from '@tabler/icons-react';
-
+import { useDisclosure } from '@mantine/hooks';
 
 
 
 
 
 export default function EditCustomer(props) {
-    const [open, setOpen] = useState(false);
+    const [opened, { open, close }] = useDisclosure(false);
     const [customer, setCustomer] = useState({
         firstname: "",
         lastname: "",
@@ -21,7 +21,7 @@ export default function EditCustomer(props) {
     });
 
     const handleClickOpen = () => {
-        setOpen(true);
+        open();
         setCustomer({
             firstname: props.data.firstname,
             lastname: props.data.lastname,
@@ -34,7 +34,7 @@ export default function EditCustomer(props) {
     };
 
     const handleClose = () => {
-        setOpen(false);
+        close()
     };
 
     const handleChange = (event) => {
@@ -52,7 +52,7 @@ export default function EditCustomer(props) {
 
     return (
         <>
-            <Modal opened={open} closeOnClickOutside={handleClose} centered transitionProps={{ transition: 'fade-up' }}>
+            <Modal opened={opened} onClose={close}>
                 <Fieldset>
                     <TextInput
                         label="First Name"

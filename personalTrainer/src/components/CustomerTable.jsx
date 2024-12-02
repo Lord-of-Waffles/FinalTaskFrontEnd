@@ -1,21 +1,16 @@
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
-import { useState, useEffect } from 'react'; // React hook for managing state
+import { useState, useEffect, useRef } from 'react'; // React hook for managing state
 import { deleteCustomer, fetchCustomers } from '../customerapi'; // Fetch API for customers
 import { themeQuartz } from '@ag-grid-community/theming';
-import {
-    Button
-} from '@mantine/core';
+import { Button, Group } from '@mantine/core';
 import EditCustomer from './EditCustomer';
 import AddCustomer from './AddCustomer';
 
 function CustomerTable() {
 
-    // State for Customer Data and Editing Logig
+    // State for Customer Data and Editing Logic
     const [rowData, setRowData] = useState([]);
-
-
-
-
+    const gridApi = useRef(null); // Reference to the AG Grid API
 
     const myTheme = themeQuartz.withParams({
         accentColor: "#DD2C00",
@@ -40,26 +35,23 @@ function CustomerTable() {
         handleFetch();
     }, []);
 
-
-
     // Fetch customers from API
     const handleFetch = () => {
         fetchCustomers()
             .then(data => setRowData(data._embedded.customers))
             .catch(err => console.error(err))
-    }
+    };
 
-
+    // Handle delete operation
     const handleDelete = (url) => {
         if (window.confirm("Are you sure?")) {
             deleteCustomer(url)
                 .then(() => {
                     handleFetch();
-                    setOpen(true);
                 })
-                .catch(err => console.error(err))
+                .catch(err => console.error(err));
         }
-    }
+    };
 
     // Column definitions for the AgGrid
     const colDefs = [
@@ -67,11 +59,13 @@ function CustomerTable() {
             cellRenderer: params => <EditCustomer handleFetch={handleFetch} data={params.data} />,
             width: 80,
             sortable: false,
+            exportable: false,
         },
         {
             cellRenderer: params => <Button color="red" size="small" onClick={() => handleDelete(params.data._links.self.href)}>Delete</Button>,
             width: 120,
             sortable: false,
+            exportable: false,
         },
         { headerName: "First Name", field: "firstname", filter: true, sortable: true, floatingFilter: true },
         { headerName: "Last Name", field: "lastname", filter: true, sortable: true, floatingFilter: true },
@@ -82,9 +76,28 @@ function CustomerTable() {
         { headerName: "Phone", field: "phone", filter: true, sortable: true, floatingFilter: true },
     ];
 
+    // Handle grid ready event to set API reference
+    const onGridReady = (params) => {
+        gridApi.current = params.api; // Set the API reference
+    };
+
+    // Function to export data to CSV
+    const handleExportCsv = () => {
+        if (gridApi.current) {
+            gridApi.current.exportDataAsCsv();
+        }
+    };
+
     return (
         <>
-            <AddCustomer handleFetch={handleFetch} />
+            <Group>
+                <AddCustomer handleFetch={handleFetch} />
+
+                {/* Button to export data to CSV */}
+                <Button color="#DD2C00" size="small" onClick={handleExportCsv}>
+                    Export to CSV
+                </Button>
+            </Group>
 
             {/* AgGrid Data Table */}
             <div style={{ height: 600, width: 1550 }}>
@@ -96,7 +109,7 @@ function CustomerTable() {
                     paginationPageSizeSelector={false}
                     theme={myTheme}
                     loadThemeGoogleFonts
-
+                    onGridReady={onGridReady} // Set API reference on grid ready
                 />
             </div>
         </>

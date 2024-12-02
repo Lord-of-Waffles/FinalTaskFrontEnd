@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { saveCustomer } from '../customerapi';
 import { Fieldset, TextInput, Button, Modal, Tooltip, ActionIcon } from '@mantine/core';
 import { IconSquareRoundedPlusFilled } from '@tabler/icons-react';
+import { useDisclosure } from '@mantine/hooks';
+
 
 
 
 export default function AddCustomer(props) {
-    const [open, setOpen] = useState(false);
+    const [opened, { open, close }] = useDisclosure(false);
     const [customer, setCustomer] = useState({
         firstname: "",
         lastname: "",
@@ -17,13 +19,14 @@ export default function AddCustomer(props) {
         city: ""
     });
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    /*const handleClickOpen = () => {
+        opened{};
     };
 
     const handleClose = () => {
         setOpen(false);
     };
+    */
 
     const handleChange = (event) => {
         setCustomer({ ...customer, [event.target.name]: event.target.value });
@@ -33,15 +36,15 @@ export default function AddCustomer(props) {
         saveCustomer(customer)
             .then(() => {
                 props.handleFetch();
-                handleClose();
+                close()
+
             })
             .catch(err => console.error(err))
     }
 
     return (
         <>
-            <Modal opened={open} closeOnClickOutside={handleClose} centered transitionProps={{ transition: 'fade-up' }}
-            >
+            <Modal opened={opened} onClose={close}>
                 <Fieldset>
                     <TextInput
                         label="First Name"
@@ -97,7 +100,7 @@ export default function AddCustomer(props) {
                     gradient={{ from: '#FF3D00', to: 'orange', deg: 45 }}
                     aria-label="Add Customer"
                     size="lg"
-                    onClick={handleClickOpen}
+                    onClick={open}
                 >
                     <IconSquareRoundedPlusFilled />
                 </ActionIcon>

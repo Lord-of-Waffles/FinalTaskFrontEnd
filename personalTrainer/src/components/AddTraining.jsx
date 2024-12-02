@@ -2,11 +2,12 @@ import { useState } from "react";
 import { saveTraining } from "../trainingapi";
 import { Modal, TextInput, Fieldset, Button, Tooltip, ActionIcon } from '@mantine/core';
 import { IconSquareRoundedPlusFilled } from '@tabler/icons-react';
-import { DatePickerInput } from '@mantine/dates';
-import dayjs from 'dayjs';
+import { DateTimePicker } from '@mantine/dates'; import dayjs from 'dayjs';
+import { useDisclosure } from '@mantine/hooks';
+
 
 export default function AddTraining(props) {
-    const [open, setOpen] = useState(false);
+    const [opened, { open, close }] = useDisclosure(false);
     const [training, setTraining] = useState({
         date: "",
         activity: "",
@@ -14,13 +15,7 @@ export default function AddTraining(props) {
         customer: ""
     });
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     const handleChange = (event) => {
         setTraining({ ...training, [event.target.name]: event.target.value });
@@ -28,28 +23,31 @@ export default function AddTraining(props) {
 
     const handleDateChange = (date) => {
         // Format the date to ISO-8601 for the API
-        setTraining({ ...training, date: dayjs(date).toISOString() });
+        setTraining({ ...training, date: date });
     };
 
     const handleSubmitTraining = () => {
-        // Ensure customer is converted to the required URL format
         const formattedTraining = {
             ...training,
-            customer: `https://myserver.personaltrainer.api/api/customers/${training.customer}`
+            date: dayjs(training.date).toISOString(), // Ensures ISO format
+            duration: Number(training.duration), // Ensures it's a number if needed
+            customer: `https://myserver.personaltrainer.api/api/customers/${training.customer}` // Ensure valid URL
         };
+
         saveTraining(formattedTraining)
             .then(() => {
                 props.handleFetch();
-                handleClose();
+                close();
             })
-            .catch(err => console.error(err))
-    }
+            .catch(err => console.error("Error in saving:", err));
+    };
+
 
     return (
         <>
-            <Modal opened={open} closeOnClickOutside={handleClose} centered transitionProps={{ transition: 'fade-up' }}>
+            <Modal opened={opened} onClose={close} centered transitionProps={{ transition: 'fade-up' }}>
                 <Fieldset>
-                    <DatePickerInput
+                    <DateTimePicker
                         label="Date"
                         name="date"
                         value={training.date}
@@ -82,7 +80,7 @@ export default function AddTraining(props) {
                     gradient={{ from: '#FF3D00', to: 'orange', deg: 45 }}
                     aria-label="Add Customer"
                     size="lg"
-                    onClick={handleClickOpen}
+                    onClick={open}
                 >
                     <IconSquareRoundedPlusFilled />
                 </ActionIcon>
