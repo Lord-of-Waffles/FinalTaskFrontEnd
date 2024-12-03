@@ -11,6 +11,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
+  "homepage": "https://github.com/Lord-of-Waffles/github.io/FinalTaskFrontEnd/",
   "dependencies": {
     "@ag-grid-community/theming": "^32.3.3",
     "@mantine/core": "^7.14.1",
