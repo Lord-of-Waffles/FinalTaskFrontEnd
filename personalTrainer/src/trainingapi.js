@@ -4,6 +4,7 @@ export function fetchTraining() {
             if (!response.ok)
                 throw new Error("Error in fetch: " + response.statusText);
 
+
             return response.json();
         })
 }

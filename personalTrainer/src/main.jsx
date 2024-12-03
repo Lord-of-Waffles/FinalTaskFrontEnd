@@ -6,7 +6,6 @@ import Home from './components/Home';
 import Customers from './components/Customers';
 import Training from './components/Training';
 import Calendar from './components/Calendar';
-import Statistics from './components/Statistics';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 
@@ -31,10 +30,6 @@ const router = createBrowserRouter([
       {
         path: "calendar",
         element: <Calendar />
-      },
-      {
-        path: "statistics",
-        element: <Statistics />
       }
     ]
   }

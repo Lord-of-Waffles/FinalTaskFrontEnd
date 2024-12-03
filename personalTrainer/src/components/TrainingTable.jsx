@@ -3,13 +3,10 @@ import { useState, useEffect } from 'react'; // React hook for managing state
 import { themeQuartz } from '@ag-grid-community/theming';
 import dayjs from 'dayjs'; // Date formatting library
 import { Button } from '@mantine/core';
-import { deleteTraining, } from '../trainingapi'; // Fetch API for trainings
 import AddTraining from './AddTraining';
-
 
 function TrainingTable() {
     const [rowData, setRowData] = useState([]); // State variable to store the data from the API
-
 
     const [colDefs, setColDefs] = useState([
         {
@@ -36,7 +33,6 @@ function TrainingTable() {
         { headerName: "Activity", field: "activity", filter: true, sortable: true, floatingFilter: true },
         { headerName: "Customer", field: "customer", filter: true, sortable: true, floatingFilter: true },
     ]);
-
 
     const myTheme = themeQuartz.withParams({
         accentColor: "#DD2C00",
@@ -79,7 +75,6 @@ function TrainingTable() {
             .catch((err) => console.error(err));
     };
 
-
     const handleDelete = (id) => {
         if (window.confirm("Are you sure you want to delete this training?")) {
             fetch(`https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/trainings/${id}`, {
@@ -94,8 +89,6 @@ function TrainingTable() {
                 .catch(err => console.error(err));
         }
     };
-
-
 
     return (
         <>

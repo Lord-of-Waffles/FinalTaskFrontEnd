@@ -4,9 +4,6 @@ import { Fieldset, TextInput, Button, Modal, Tooltip, ActionIcon } from '@mantin
 import { IconSquareRoundedPlusFilled } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 
-
-
-
 export default function AddCustomer(props) {
     const [opened, { open, close }] = useDisclosure(false);
     const [customer, setCustomer] = useState({
@@ -19,15 +16,6 @@ export default function AddCustomer(props) {
         city: ""
     });
 
-    /*const handleClickOpen = () => {
-        opened{};
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-    */
-
     const handleChange = (event) => {
         setCustomer({ ...customer, [event.target.name]: event.target.value });
     }
@@ -36,10 +24,9 @@ export default function AddCustomer(props) {
         saveCustomer(customer)
             .then(() => {
                 props.handleFetch();
-                close()
-
+                close();
             })
-            .catch(err => console.error(err))
+            .catch(err => console.error(err));
     }
 
     return (
@@ -93,7 +80,6 @@ export default function AddCustomer(props) {
                     </Button>
                 </Fieldset>
             </Modal>
-            {/* Add Customer Button */}
             <Tooltip label="Add a customer">
                 <ActionIcon
                     variant="gradient"
@@ -105,8 +91,6 @@ export default function AddCustomer(props) {
                     <IconSquareRoundedPlusFilled />
                 </ActionIcon>
             </Tooltip>
-
-
         </>
-    )
+    );
 }

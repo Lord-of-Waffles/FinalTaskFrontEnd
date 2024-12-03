@@ -2,9 +2,9 @@ import { useState } from "react";
 import { saveTraining } from "../trainingapi";
 import { Modal, TextInput, Fieldset, Button, Tooltip, ActionIcon } from '@mantine/core';
 import { IconSquareRoundedPlusFilled } from '@tabler/icons-react';
-import { DateTimePicker } from '@mantine/dates'; import dayjs from 'dayjs';
+import { DateTimePicker } from '@mantine/dates';
+import dayjs from 'dayjs';
 import { useDisclosure } from '@mantine/hooks';
-
 
 export default function AddTraining(props) {
     const [opened, { open, close }] = useDisclosure(false);
@@ -15,23 +15,20 @@ export default function AddTraining(props) {
         customer: ""
     });
 
-
-
     const handleChange = (event) => {
         setTraining({ ...training, [event.target.name]: event.target.value });
-    }
+    };
 
     const handleDateChange = (date) => {
-        // Format the date to ISO-8601 for the API
         setTraining({ ...training, date: date });
     };
 
     const handleSubmitTraining = () => {
         const formattedTraining = {
             ...training,
-            date: dayjs(training.date).toISOString(), // Ensures ISO format
-            duration: Number(training.duration), // Ensures it's a number if needed
-            customer: `https://myserver.personaltrainer.api/api/customers/${training.customer}` // Ensure valid URL
+            date: dayjs(training.date).toISOString(),
+            duration: Number(training.duration),
+            customer: `https://myserver.personaltrainer.api/api/customers/${training.customer}`
         };
 
         saveTraining(formattedTraining)
@@ -41,7 +38,6 @@ export default function AddTraining(props) {
             })
             .catch(err => console.error("Error in saving:", err));
     };
-
 
     return (
         <>
@@ -85,9 +81,6 @@ export default function AddTraining(props) {
                     <IconSquareRoundedPlusFilled />
                 </ActionIcon>
             </Tooltip>
-
-
-
         </>
-    )
+    );
 }

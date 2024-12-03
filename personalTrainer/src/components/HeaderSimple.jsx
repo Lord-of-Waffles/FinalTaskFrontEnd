@@ -3,8 +3,6 @@ import classes from './HeaderSimple.module.css';
 import { IconRun } from '@tabler/icons-react';
 import { Group, Container, Title } from '@mantine/core';
 
-
-
 function HeaderSimple() {
 
 

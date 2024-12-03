@@ -15,7 +15,6 @@ const data = [
     { link: '/customers', label: 'Customers', icon: IconUserFilled },
     { link: '/training', label: 'Training Sessions', icon: IconBarbellFilled },
     { link: '/calendar', label: 'Calendar', icon: IconCalendarFilled },
-    { link: '/statistics', label: 'Statistics', icon: IconChartDotsFilled },
 ];
 
 function NavbarSimple() {

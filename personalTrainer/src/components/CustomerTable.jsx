@@ -7,8 +7,6 @@ import EditCustomer from './EditCustomer';
 import AddCustomer from './AddCustomer';
 
 function CustomerTable() {
-
-    // State for Customer Data and Editing Logic
     const [rowData, setRowData] = useState([]);
     const gridApi = useRef(null); // Reference to the AG Grid API
 
@@ -39,7 +37,7 @@ function CustomerTable() {
     const handleFetch = () => {
         fetchCustomers()
             .then(data => setRowData(data._embedded.customers))
-            .catch(err => console.error(err))
+            .catch(err => console.error(err));
     };
 
     // Handle delete operation
@@ -92,14 +90,10 @@ function CustomerTable() {
         <>
             <Group>
                 <AddCustomer handleFetch={handleFetch} />
-
-                {/* Button to export data to CSV */}
                 <Button color="#DD2C00" size="small" onClick={handleExportCsv}>
                     Export to CSV
                 </Button>
             </Group>
-
-            {/* AgGrid Data Table */}
             <div style={{ height: 600, width: 1550 }}>
                 <AgGridReact
                     rowData={rowData}

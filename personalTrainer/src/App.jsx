@@ -8,7 +8,6 @@ function App() {
         <Link to={"/customers"}></Link>
         <Link to={"/training"}></Link>
         <Link to={"/calendar"}></Link>
-        <Link to={"/statistics"}></Link>
       </nav>
       <Outlet />
     </>

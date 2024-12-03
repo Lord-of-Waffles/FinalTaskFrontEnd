@@ -4,10 +4,6 @@ import { Fieldset, TextInput, Button, Modal, Tooltip, ActionIcon } from '@mantin
 import { IconEdit } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 
-
-
-
-
 export default function EditCustomer(props) {
     const [opened, { open, close }] = useDisclosure(false);
     const [customer, setCustomer] = useState({
@@ -30,16 +26,16 @@ export default function EditCustomer(props) {
             streetaddress: props.data.streetaddress,
             postcode: props.data.postcode,
             city: props.data.city
-        })
+        });
     };
 
     const handleClose = () => {
-        close()
+        close();
     };
 
     const handleChange = (event) => {
         setCustomer({ ...customer, [event.target.name]: event.target.value });
-    }
+    };
 
     const handleSave = () => {
         updateCustomer(props.data._links.customer.href, customer)
@@ -47,8 +43,8 @@ export default function EditCustomer(props) {
                 props.handleFetch();
                 handleClose();
             })
-            .catch(err => console.error(err))
-    }
+            .catch(err => console.error(err));
+    };
 
     return (
         <>
@@ -101,7 +97,6 @@ export default function EditCustomer(props) {
                     </Button>
                 </Fieldset>
             </Modal>
-            {/* Add Customer Button */}
             <Tooltip label="Edit Customer">
                 <ActionIcon
                     variant="gradient"
@@ -113,9 +108,6 @@ export default function EditCustomer(props) {
                     <IconEdit />
                 </ActionIcon>
             </Tooltip>
-
-
-
         </>
-    )
+    );
 }
