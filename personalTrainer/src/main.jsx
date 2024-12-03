@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createHashRouter, RouterProvider } from 'react-router-dom';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
@@ -10,9 +10,10 @@ import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
+    basename: import.meta.env.BASE_URL,
     element: <App />,
     children: [
       {
