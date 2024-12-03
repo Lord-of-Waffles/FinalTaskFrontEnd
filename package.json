@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build --dotfiles"
+    "deploy": "gh-pages -d dist --dotfiles"
   },
   "homepage": "https://github.com/Lord-of-Waffles/github.io/FinalTaskFrontEnd/",
   "dependencies": {
